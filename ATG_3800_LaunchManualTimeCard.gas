@@ -1,0 +1,47 @@
+Program.Sub.ScreenSU.Start
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sParam.Declare(String)
+V.Local.iReturn.Declare(Long)
+
+'attach synchronously
+F.Intrinsic.Control.If(V.Caller.Hook,=,15710)
+	V.Passed.000016.Set("Time Cards")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.Endif
+
+'attach asynchronously
+F.Intrinsic.Control.If(V.Caller.Hook,=,15760)
+	F.Global.General.LaunchMenuTask(530,V.Local.iReturn)
+	'F.Global.General.CallWrapperAsync(50,"JB0080")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: ATG_3800_LaunchManualTimeCard.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Main.End
+
+Program.Sub.Comments.Start
+${$0$}$ManualTimeCardTest$}$MEK$}$3/2/2012
+${$1$}$$}$$}$1$}$15760$}$OLS001-PB-SCRIPT-1-HOOK (On-line GUI)$}$4/15/2016 12:40:27 PM$}$(Program: OLG002; Screen: OLS001)
+
+${$1$}$$}$$}$0$}$15710$}$OLS001-POPULATE-HOOK (On-line GUI)$}$4/15/2016 12:39:56 PM$}$(Program: OLG002; Screen: OLS001)
+
+Program.Sub.Comments.End
+
